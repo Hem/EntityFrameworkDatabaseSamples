@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest # You can specify a tag, e.g., 2019-latest, or 2022-latest
+    container_name: mssql-server
+    ports:
+      - 1433:1433 # Maps the default SQL Server port (1433) to the host
+    environment:
+      SA_PASSWORD: "1201H3llo***" # **IMPORTANT: Change this to a strong password!**
+      ACCEPT_EULA: "1" # Required to accept the End User License Agreement
+    volumes:
+      - db_samples_mssql_data:/var/opt/mssql # Persists the database files
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    #  Extra Options.  Uncomment if you need them
+    # extra_hosts:
+    #   - "somehost:192.168.1.100"
+    #   - "otherhost:192.168.1.101"
+    # healthcheck:
+    #   test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-S", "localhost", "-U", "sa", "-P", "${SA_PASSWORD}", "-Q", "SELECT 1"]
+    #   interval: 30s
+    #   timeout: 5s
+    #   retries: 5
+
+volumes:
+  db_samples_mssql_data: # Named volume for persistent data storage
